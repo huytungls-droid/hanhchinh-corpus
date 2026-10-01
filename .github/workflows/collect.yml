@@ -16,19 +16,26 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Chay thu Python
+      - name: Cai thu vien
         run: |
-          python test.py
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Dong goi ket qua
+      - name: Thu thap Dak Lak
         run: |
-          cd output
-          zip -r ../ket_qua_thu.zip .
-          cd ..
+          python collector_daklak.py
 
-      - name: Luu file de tai ve
+      - name: Kiem tra ket qua
+        run: |
+          echo "So file TXT:"
+          find corpus -type f -name "*.txt" | wc -l
+
+          echo "Danh sach:"
+          find corpus -type f -name "*.txt" | head -20
+
+      - name: Upload corpus
         uses: actions/upload-artifact@v4
         with:
-          name: ket-qua-thu
-          path: ket_qua_thu.zip
+          name: daklak-test-corpus
+          path: corpus/
           retention-days: 7
